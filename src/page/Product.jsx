@@ -6,6 +6,9 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 const Product = () => {
   const [ data, setdata ] = useState([])
   const [isOpen, setIsOpen] = useState(false)
+  const [edited, setEdited] = useState(false);
+  const [selected, setSelected] = useState(null);
+
   const [form] = Form.useForm();
   const columns = [
     {
@@ -42,7 +45,7 @@ const Product = () => {
       width: 100,
       render: (data) => (
         <div className='flex items-center gap-3' >
-          <Button type='primary' >
+          <Button onClick={()=> handleUpdated(data)} type='primary' >
             <EditOutlined />
           </Button>
           <Button 
@@ -88,13 +91,36 @@ const Product = () => {
       status_product: values.statusProduct,
     }
 
-    const { error } = await supabase.from('products').insert(payload);
+    let query;
+
+    if(edited) {
+      query = await supabase.from('products').update(payload).eq('id', selected);
+    } else{
+      query = await supabase.from('products').insert(payload);
+    }
+
+    const { error } = query;
 
     if(error) return console.error(error.message);
 
     fetchData();
+    setEdited(false);
     setIsOpen(false);
+    setSelected(null);
     form.resetFields();
+  };
+
+  const handleUpdated = (record) => {
+    setIsOpen(true);
+    setEdited(true);
+    setSelected(record.id);
+
+    form.setFieldsValue({
+      nameProduct: record.name_product,
+      priceProduct: record.price,
+      stockProduct: record.stock,
+      statusProduct: record.status_product
+    })
   };
 
   useEffect(() => {
