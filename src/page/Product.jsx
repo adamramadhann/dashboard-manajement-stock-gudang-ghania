@@ -8,8 +8,8 @@ const Product = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [edited, setEdited] = useState(false);
   const [selected, setSelected] = useState(null);
-
   const [form] = Form.useForm();
+  
   const columns = [
     {
       title: 'No',
@@ -85,8 +85,7 @@ const Product = () => {
 
   const handleSubmit = async (values) => {
     const payload = {
-      name_product: values.nameProduct,
-      stock: values.stockProduct,
+      name_product: values.nameProduct, 
       price: values.priceProduct,
       status_product: values.statusProduct,
     }
@@ -174,18 +173,6 @@ const Product = () => {
             }]}
           >
             <InputNumber style={{ width: '100%'}} placeholder='input price product' />
-          </Form.Item>
-
-           {/* input stock product */}
-           <Form.Item
-            label="Stock Product"
-            name={'stockProduct'}
-            rules={[{
-              required: true,
-              message: "input stock product can not be empity"
-            }]}
-          >
-            <InputNumber style={{ width: '100%'}} placeholder='input stock product' />
           </Form.Item>
 
           {/* input stock product */}
