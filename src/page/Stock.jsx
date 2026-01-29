@@ -86,7 +86,8 @@ const Stock = () => {
   const handleSubmit = async (values) => {
     const { products_id, qty, type } = values;
 
-    let newStock = dataProduct?.stock;
+    const product = dataProduct.find((prev) => prev.id === products_id );
+    let newStock = product.stock;
 
     if(type) {
       newStock += qty;
